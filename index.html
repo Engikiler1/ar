@@ -1,51 +1,28 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <meta charset="UTF-8" />
-    <title>AR ODS 13</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR ODS 13 - Cuidado del Planeta</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
   </head>
   <body style="margin:0; overflow:hidden">
+    <!-- Configuración de la escena AR -->
     <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
-      <!-- Cargar los modelos GLB -->
-      <a-assets>
-        <a-asset-item id="modelo-chimney" src="ar/chimney.glb"></a-asset-item>
-        <a-asset-item id="modelo-volga" src="ar/volga.glb"></a-asset-item>
-      </a-assets>
-
-      <!-- Marcador Hiro para los modelos -->
+      <!-- Marcador AR (puede ser un código QR o una imagen) -->
       <a-marker preset="hiro">
-        <!-- Modelo de contaminación (chimenea) -->
-        <a-entity id="contaminacion"
-                  gltf-model="#modelo-chimney"
-                  position="0 0 0"
-                  scale="0.2 0.2 0.2">
-        </a-entity>
+  <a-entity 
+    gltf-model="url(https://github.com/Engikiler1/ar/blob/main/trees.glb)" 
+    scale="0.5 0.5 0.5" 
+    position="0 0.5 0" 
+    animation-mixer>
+  </a-entity>
+</a-marker>
 
-        <!-- Modelo de árbol, inicialmente oculto -->
-        <a-entity id="arbol"
-                  gltf-model="#modelo-volga"
-                  position="0 0 0"
-                  scale="0.2 0.2 0.2"
-                  visible="false">
-        </a-entity>
-      </a-marker>
-
-      <!-- Cámara con cursor para hacer clic/tap -->
-      <a-entity camera cursor="rayOrigin: mouse"></a-entity>
+      <a-entity camera></a-entity>
     </a-scene>
-
-    <script>
-      // Cuando hagas clic/tap sobre el modelo de contaminación, se oculta
-      // y aparece el árbol (la idea de “limpiar” el planeta).
-      const cont = document.querySelector('#contaminacion');
-      const arbol = document.querySelector('#arbol');
-
-      cont.addEventListener('click', () => {
-        cont.setAttribute('visible', 'false');
-        arbol.setAttribute('visible', 'true');
-      });
-    </script>
   </body>
 </html>
+
+
