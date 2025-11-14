@@ -1,36 +1,52 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juego de AR - Cuidado del Planeta</title>
+  <head>
+    <meta charset="UTF-8" />
+    <title>AR ODS 13</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/jeromeetienne/AR.js/aframe/build/aframe-ar.js"></script>
-</head>
-<body style="margin: 0; overflow: hidden;">
-    <a-scene embedded arjs>
-        <!-- Cámara -->
-        <a-marker preset="hiro">
-        <a-entity id="contaminacion" 
-                  geometry="primitive: box; depth: 1; width: 1; height: 1;"
-                  material="color: red;"
-                  position="0 0.5 0"
-                  event-set__mouseenter="scale: 1.2 1.2 1.2"
-                  event-set__mouseleave="scale: 1 1 1"
-                  event-set__click="color: green; visible: false" >
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
+  </head>
+  <body style="margin:0; overflow:hidden">
+    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+      <!-- Cargar los modelos GLB -->
+      <a-assets>
+        <a-asset-item id="modelo-chimney" src="ar/chimney.glb"></a-asset-item>
+        <a-asset-item id="modelo-volga" src="ar/volga.glb"></a-asset-item>
+      </a-assets>
+
+      <!-- Marcador Hiro para los modelos -->
+      <a-marker preset="hiro">
+        <!-- Modelo de contaminación (chimenea) -->
+        <a-entity id="contaminacion"
+                  gltf-model="#modelo-chimney"
+                  position="0 0 0"
+                  scale="0.2 0.2 0.2">
         </a-entity>
 
-        <!-- Árbol reemplazo -->
+        <!-- Modelo de árbol, inicialmente oculto -->
         <a-entity id="arbol"
-                  geometry="primitive: cylinder; radius: 0.5; height: 2;"
-                  material="color: green;"
-                  position="0 1 0"
+                  gltf-model="#modelo-volga"
+                  position="0 0 0"
+                  scale="0.2 0.2 0.2"
                   visible="false">
         </a-entity>
-    </a-marker>
+      </a-marker>
 
-        <!-- Cámara de AR -->
-        <a-entity camera></a-entity>
-    </a-scene>  
-</body>
+      <!-- Cámara con cursor para hacer clic/tap -->
+      <a-entity camera fov="80" look-controls="pointerLockEnabled: true; touchEnabled: true;"></a-entity>
+    </a-scene>
+
+    <script>
+      // Cuando hagas clic/tap sobre el modelo de contaminación, se oculta
+      // y aparece el árbol (la idea de “limpiar” el planeta).
+      const cont = document.querySelector('#contaminacion');
+      const arbol = document.querySelector('#arbol');
+
+      cont.addEventListener('click', () => {
+        cont.setAttribute('visible', 'false');
+        arbol.setAttribute('visible', 'true');
+      });
+    </script>
+  </body>
 </html>
+
